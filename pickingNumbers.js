@@ -1,19 +1,24 @@
 function pickingNumbers(a) {
-  const sorted = a.sort((a,b) => a-b)
-  let count = []
-  let i = 0
-  let j = 1;
-  let dif = Math.abs(sorted[i]-sorted[j])
-  for (i; i < sorted.length; i++) {
-    if(dif <= 1) {
-      count[i] = 1;
-      while (dif <= 1) {
-        j++;
-        count++
+  const counts = a.reduce(function(obj, item) {
+    if (!obj[item]) {
+      obj[item] = 0;
+    }
+    obj[item]++;
+    return obj
+  }, {})
+  console.log(counts)
+  let max = 0;
+  let keys = Object.keys(counts).map(key => parseInt(key, 10))
+  console.log(keys)
+  for (let i = 0; i < Object.keys(counts).length; i++) {
+    if (keys[i]+1 === keys[i+1]) {
+      if (counts[Object.keys(counts)[i]] + counts[Object.keys(counts)[i+1]] > max) {
+        max = counts[Object.keys(counts)[i]] + counts[Object.keys(counts)[i+1]];
       }
     }
+    if (Object.values(counts).reduce((a,b) => a > b ? a : b) > max) {
+      max = Object.values(counts).reduce((a,b) => a > b ? a : b)
+    }
   }
-  return count;
+  return max
 }
-
-console.log(pickingNumbers([1, 2, 2, 3, 1, 2]));
